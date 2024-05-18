@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:spends/screens/add_blance.dart';
-import 'package:spends/screens/add_spends.dart';
+import 'package:spends/screens/add_balance.dart';
+import 'package:spends/screens/add_spending.dart';
 import 'package:spends/screens/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     addTransaction(transaction);
   }
 
-  void numberBlance(String number) {
+  void numberBalance(String number) {
     final transaction =
         Transaction(amount: '+$number', date: DateTime.now(), color: true);
     addTransaction(transaction);
@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             const SizedBox(
-              height: 20,
+              height: 25,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) =>
-                              AddBalance(updateBalance, numberBlance),
+                              AddBalance(updateBalance, numberBalance),
                         ),
                       );
                     },
@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) =>
-                              AddSpends(updateBalance, numberSpends),
+                              AddSpending(updateBalance, numberSpends),
                         ),
                       );
                     },
@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Add Blance',
+                  'Add Money',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
@@ -177,10 +177,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 SizedBox(
-                  width: 35,
+                  width: 38,
                 ),
                 Text(
-                  'Add Spends',
+                  'Send Money',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,

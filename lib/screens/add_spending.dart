@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:spends/widget/number_button.dart';
+import 'package:spends/widget/action_button.dart';
+import '../widget/number_button.dart';
 
-class AddBalance extends StatefulWidget {
-  final void Function(double) updateBalance;
-  final Function(String) numberBlance;
-  const AddBalance(this.updateBalance, this.numberBlance, {super.key});
+class AddSpending extends StatefulWidget {
+  final Function(double) updateBalance;
+  final Function(String) numberSpending;
+
+  const AddSpending(this.updateBalance, this.numberSpending, {super.key});
 
   @override
-  State<AddBalance> createState() => _AddBalanceState();
-
-  static of(BuildContext context) {}
+  State<AddSpending> createState() => _AddSpendingState();
 }
 
-class _AddBalanceState extends State<AddBalance> {
+class _AddSpendingState extends State<AddSpending> {
   String number = '';
 
   void addToNumber(String digit) {
@@ -31,11 +31,43 @@ class _AddBalanceState extends State<AddBalance> {
     });
   }
 
-  void addBalance() {
-    double newBalance = double.parse(number);
-    widget.updateBalance(newBalance);
-    widget.numberBlance(number);
-    Navigator.pop(context);
+  void deductBalance() {
+    double deduction = double.parse(number);
+    if (deduction > 0 && deduction <= widget.updateBalance(0)) {
+      Navigator.pop(context);
+      widget.updateBalance(-deduction);
+      widget.numberSpending(number);
+    } else {
+      setState(() {
+        number = '';
+      });
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              'Error',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            content: const Text('Deduction amount exceeds balance.'),
+            actions: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.deepOrangeAccent,
+                ),
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -47,8 +79,12 @@ class _AddBalanceState extends State<AddBalance> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              const SizedBox(
+                height: 25,
+              ),
               Text(
-                number == '' ? 'Add Blance' : number,
+                number == '' ? 'Send Money' : number,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.deepOrange,
                   fontSize: 45,
@@ -139,21 +175,10 @@ class _AddBalanceState extends State<AddBalance> {
               const SizedBox(
                 height: 30,
               ),
-              SizedBox(
-                height: 70,
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: number == '' ? () {} : addBalance,
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.deepOrangeAccent,
-                  ),
-                  child: const Text(
-                    'Add',
-                    style: TextStyle(fontSize: 30),
-                  ),
-                ),
-              ),
+              ElevButton(
+                number == '' ? () {} : deductBalance,
+                'Send',
+              )
             ],
           ),
         ),
